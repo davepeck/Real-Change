@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 34
+/svn/!svn/ver/73/trunk/PyFileMaker
+END
+UnicodeNormalizer.py
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/72/trunk/PyFileMaker/UnicodeNormalizer.py
+END
+FMServer.py
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/73/trunk/PyFileMaker/FMServer.py
+END
+FMData.py
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/!svn/ver/71/trunk/PyFileMaker/FMData.py
+END
+FMError.py
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/63/trunk/PyFileMaker/FMError.py
+END
+FMResultset.py
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/63/trunk/PyFileMaker/FMResultset.py
+END
+xml2obj.py
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/50/trunk/PyFileMaker/xml2obj.py
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/!svn/ver/64/trunk/PyFileMaker/__init__.py
+END
+FMProLayout.py
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/50/trunk/PyFileMaker/FMProLayout.py
+END
+FMXML.py
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/63/trunk/PyFileMaker/FMXML.py
+END

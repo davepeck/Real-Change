@@ -1,0 +1,22 @@
+application: real-change
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: false  # although shouldn't i be able to change this to True?
+
+handlers:
+- url: /(favicon\.ico|robots\.txt)
+  static_files: realchange/static/\1
+  upload: static/(.*)
+- url: /static/
+  static_dir: realchange/static/
+  expiration: 1000d
+- url: /.*
+  script: main.app
+
+libraries:
+- name: webapp2
+  version: "latest"
+- name: jinja2
+  version: "latest"
+
