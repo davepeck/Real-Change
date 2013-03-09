@@ -36,3 +36,9 @@ nosetests.xml
 
 .svn
 
+# Stupid OS X
+.DS_Store
+.DS_Store*
+.DS_Store/*
+
+
