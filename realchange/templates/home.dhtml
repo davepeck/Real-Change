@@ -1,8 +1,37 @@
+<!DOCTYPE html>
 <html>
-<head>
-    <title>Hello, World</title>
-</head>
-<body>
-    <h1>Hello, People</h1>
-    <p>This is the Real-Change repo.</p>
-</body>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Real Change Vendor Map</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <link rel="stylesheet" href="/static/css/normalize.css">
+        <link rel="stylesheet" href="/static/css/realchange.css">
+    </head>
+    <body>
+        <p>Real Change Vendor Map</p>
+        <div id="vendormap"></div>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="/static/js/vendor/jquery-1.9.0.min.js"><\/script>')</script>
+        <script src="static/js/realchange.js"></script>
+
+        <script type="text/javascript"
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASG8F07UBIb8EBSz4qHrOwaq4Gw4DsxHs&sensor=false">
+        </script>
+        <script type="text/javascript">
+          $(document).ready( function() {
+            console.log("ready");
+            var mapOptions = {
+              center: new google.maps.LatLng(47.60651025683697,-122.33057498931885),
+              zoom: 12,
+              mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var map = new google.maps.Map(document.getElementById("vendormap"), mapOptions);
+          } );
+        </script>
+    </body>
+</html>
