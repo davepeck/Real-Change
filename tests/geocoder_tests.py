@@ -1,7 +1,5 @@
 from nose.tools import *
-from googlegeocoder import GoogleGeocoder 
+from geopy import geocoders  
 
 def test_index():
-    geocoder = GoogleGeocoder()
-    
     print "testing"
