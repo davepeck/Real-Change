@@ -9,6 +9,9 @@ URLS = [
 
     # CRON URLs
     Route(r'/cron/sync/fm/', cron.SyncFilemakerHandler, name='sync-filemaker'),
+    
+    # Vendor JSON API
+    Route(r'/vendors', handlers.VendorHandler, name'vendors')
 ]
 
 

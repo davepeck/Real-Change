@@ -46,4 +46,8 @@ class RealChangeHandler(webapp2.RequestHandler):
 class HomeHandler(RealChangeHandler):
     def get(self):
         return self.respond_with_template('home.dhtml', {})
+        
+class VendorHandler(RealChangeHandler):
+    def get(self):
+        return self.respond_with_template('vendors.dhtml', {})
 
