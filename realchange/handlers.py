@@ -42,12 +42,11 @@ class RealChangeHandler(webapp2.RequestHandler):
         rendered_template = self._render_template(template, **params)
         self.respond(content=rendered_template, content_type=content_type, status=status)
 
-
 class HomeHandler(RealChangeHandler):
     def get(self):
         return self.respond_with_template('home.dhtml', {})
         
 class VendorHandler(RealChangeHandler):
     def get(self):
-        return self.respond_with_template('vendors.dhtml', {})
+        return self.respond_with_jsonable(jsonable=('pickle','onion'))
 
