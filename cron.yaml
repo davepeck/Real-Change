@@ -1,0 +1,6 @@
+cron:
+- description: sync with filemaker database
+  url: /cron/sync/fm/
+  schedule: every 12 hours
+  target: sync
+

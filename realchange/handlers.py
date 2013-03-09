@@ -1,5 +1,6 @@
 import os
 import sys
+import json
 import webapp2
 import jinja2
 
@@ -27,16 +28,22 @@ class RealChangeHandler(webapp2.RequestHandler):
     def _render_template(self, template, **kwargs):
         return template.render(**kwargs)
 
-    def respond(self, template_name, params, content_type="text/html", status=200):
-        template = self._get_template(template_name)
-        rendered_template = self._render_template(template, **params)
+    def respond(self, content, content_type="text/html", status=200):
         self.response.status_int = status
         self.response.headers['Content-Type'] = content_type
-        self.response.write(rendered_template)
+        self.response.write(content)
 
+    def respond_with_jsonable(self, jsonable, content_type="application/json", status=200):
+        content = json.dumps(jsonable)
+        return self.respond(content=content, content_type=content_type, status=status)
+
+    def respond_with_template(self, template_name, params, content_type="text/html", status=200):
+        template = self._get_template(template_name)
+        rendered_template = self._render_template(template, **params)
+        self.respond(content=rendered_template, content_type=content_type, status=status)
 
 
 class HomeHandler(RealChangeHandler):
     def get(self):
-        return self.respond('home.dhtml', {})
+        return self.respond_with_template('home.dhtml', {})
 

@@ -11,6 +11,9 @@ handlers:
 - url: /static/
   static_dir: realchange/static/
   expiration: 1000d
+- url: /cron/.*
+  script: main.app
+  login: admin
 - url: /.*
   script: main.app
 

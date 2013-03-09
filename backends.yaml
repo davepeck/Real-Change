@@ -1,0 +1,3 @@
+backends:
+- name: sync
+  options: dynamic
