@@ -30,6 +30,10 @@ class RealChangeHandler(webapp2.RequestHandler):
     def _render_template(self, template, **kwargs):
         return template.render(**kwargs)
 
+    @property
+    def is_development(self):
+        return os.environ.get("SERVER_SOFTWARE", "").startswith("Development")
+
     def respond(self, content, content_type="text/html", status=200):
         self.response.status_int = status
         self.response.headers['Content-Type'] = content_type

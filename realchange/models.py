@@ -27,7 +27,7 @@ class Vendor(ndb.Model):
     assignment_status = ndb.StringProperty(indexed=True)
 
     # GeoData
-    geo_point = ndb.GeoPtProperty(indexed=True)  # XXX when do we actually do this?
+    geo_point = ndb.GeoPtProperty()
 
     # Original (non-geocoded) data
     turf_address = ndb.StringProperty()

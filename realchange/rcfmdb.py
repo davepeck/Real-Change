@@ -64,11 +64,6 @@ class RealChangeTurf(object):
     def turf_city(self):
         return self._get(RealChangeTurf.C_TURF_CITY)
 
-    @property
-    def geo_point(self):
-        # XXX TODO -- maybe this is the place to geocode
-        pass
-
 
 class RealChangeDatabaseRow(object):
     C_VENDOR_ID = "kIDVendor_p"

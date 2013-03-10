@@ -1,5 +1,4 @@
 from __future__ import print_function
-import os
 import logging
 from geopy import geocoders
 from google.appengine.api import taskqueue
@@ -21,7 +20,7 @@ class RealChangeCronHandler(RealChangeHandler):
     SAFE_CRON_HEADER = "X-Appengine-Cron"
 
     def ensure_cron(self):
-        is_development = os.environ.get("SERVER_SOFTWARE", "").startswith("Development")
+        is_development = self.is_development
         has_cron_header = RealChangeCronHandler.SAFE_CRON_HEADER in self.request.headers
         if (not is_development) and (not has_cron_header):
             raise CronError("Illegal call to app engine cron.")
