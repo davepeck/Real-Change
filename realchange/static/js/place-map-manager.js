@@ -71,12 +71,12 @@ PlaceMapManager.prototype.showPlacesInternal = function(data, p){
   if (data.length){
     var bounds = new google.maps.LatLngBounds();
     _(data).each( _(function(vendorData){
-      // either make new vendorLocation or add new vendor to existing vendorLocation
+      // either make vendorLocation or add new vendor to existing vendorLocation
       //(multiple vandors can be at one location -- should share one location marker)
       var sharesLocation = _(this.places).find(function(place){ return vendorData.lat = place.lat && vendorData.lng = place.lng; });
       if (sharesLocation) {
         sharesLocation.addVendor(vendorData);
-      }
+      
       else {
         var vendorLocation = new VendorLocation(this, vendorData, p);
         this.places.push( place );

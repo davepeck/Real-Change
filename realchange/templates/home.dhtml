@@ -26,7 +26,7 @@
         </script>
         <script type="text/javascript">
           $(document).ready( function() {
-            var vandorMap = new VendorMapApp();
+            var vendorMap = new VendorMapApp();
           } );
         </script>
 		</div>

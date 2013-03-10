@@ -6,4 +6,3 @@ def test_index():
     assert g
     place, (lat, lng) = g.geocode("10900 Euclid Ave in Cleveland")  
     print "%s: %.5f, %.5f" % (place, lat, lng)
-    print "testing"
