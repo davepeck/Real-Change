@@ -18,6 +18,7 @@
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="/static/js/vendor/jquery-1.9.0.min.js"><\/script>')</script>
+        <script src="static/js/underscore.js"></script>
         <script src="static/js/realchange.js"></script>
 
         <script type="text/javascript"
@@ -25,13 +26,7 @@
         </script>
         <script type="text/javascript">
           $(document).ready( function() {
-            console.log("ready");
-            var mapOptions = {
-              center: new google.maps.LatLng(47.60651025683697,-122.33057498931885),
-              zoom: 12,
-              mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-            var map = new google.maps.Map(document.getElementById("vendormap"), mapOptions);
+            var vandorMap = new VendorMapApp();
           } );
         </script>
 		</div>
