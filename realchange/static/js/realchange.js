@@ -5,6 +5,7 @@ function VendorMapApp(){
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   var map = new google.maps.Map(document.getElementById("vendormap"), mapOptions);
+
   var latLon = new google.maps.LatLng(47.6560, -122.3401);
   var markerOptions = {position: latLon, optimized: false, icon: this.image, map: map};
   var marker = new google.maps.Marker(markerOptions);
@@ -21,12 +22,26 @@ function VendorMapApp(){
   var infoWin = new google.maps.InfoWindow(infoWinOptions);
   infoWin.open(map, marker);
 
+
+  this.mapManager = new PlaceMapManager(this, map);
+
+  //this.fetchVendors();
+
+  //MATT DO STUFF HERE :)
+
 }
 
-VendorMapApp.prototype.func = function(){
-
-}
-
-VendorMapApp.prototype.func = function(){
-
+VendorMapApp.prototype.fetchVendors = function(){
+  var url = '';
+  $.ajax({
+    url: url,
+    dataType: 'json',
+    success: _(function(data){
+        console.log("fetch done");
+        this.placeMapManager.showPlacesFromFullResponse(data, {clearMap:true})
+      }).bind(this),
+    error: _(function(){
+        console.log("fetch error");
+      }).bind(this)
+  });
 }
