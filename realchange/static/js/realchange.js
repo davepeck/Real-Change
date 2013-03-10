@@ -25,20 +25,20 @@ function VendorMapApp(){
 
   this.mapManager = new PlaceMapManager(this, map);
 
-  //this.fetchVendors();
+  this.fetchVendors();
 
   //MATT DO STUFF HERE :)
 
 }
 
 VendorMapApp.prototype.fetchVendors = function(){
-  var url = '';
+  var url = '/api/vendors/';
   $.ajax({
     url: url,
     dataType: 'json',
     success: _(function(data){
         console.log("fetch done");
-        this.placeMapManager.showPlacesFromFullResponse(data, {clearMap:true})
+        this.mapManager.showPlacesFromFullResponse(data, {clearMap:true, fitMapToMarkers:true});
       }).bind(this),
     error: _(function(){
         console.log("fetch error");
