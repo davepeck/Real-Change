@@ -95,7 +95,7 @@ class GeocodeTaskHandler(RealChangeHandler):
 
         geocodes = coder.geocode(vendor.address_for_geocoding, exactly_one=False)
         place, (lat, lng) = geocodes[0]
-        vendor.geo_point = ndb.GeoPt(lat, lng)
+        vendor.new_geo_point = ndb.GeoPt(lat, lng)
         vendor.put()
 
         self.respond_ok()

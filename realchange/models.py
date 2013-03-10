@@ -27,7 +27,7 @@ class Vendor(ndb.Model):
     assignment_status = ndb.StringProperty(indexed=True)
 
     # GeoData
-    geo_point = ndb.GeoPtProperty()
+    new_geo_point = ndb.GeoPtProperty()
 
     # Original (non-geocoded) data
     turf_address = ndb.StringProperty()
@@ -92,8 +92,8 @@ class Vendor(ndb.Model):
             public_profile_url=self.public_profile_url,
             club_status=self.club_status,
             assignment_status=self.assignment_status,
-            latitude=self.geo_point[0] if self.geo_point else None,
-            longitude=self.geo_point[1] if self.geo_point else None,
+            latitude=self.new_geo_point[0] if self.new_geo_point else None,
+            longitude=self.new_geo_point[1] if self.new_geo_point else None,
             display_location=self.display_location,
             public_photo_url=self.public_photo_url,
             is_public=self.is_public,
