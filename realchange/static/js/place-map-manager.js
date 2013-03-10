@@ -151,12 +151,12 @@ PlaceMapManager.prototype.showPlacesInternal = function(data, p){
     var bounds = new google.maps.LatLngBounds();
     _(data).each( _(function(vendorData){
 
-
+        /*
       //XXX for testing with non-geocoded data
       if (!vendorData.latitude) vendorData.latitude = Util.getRandomArbitary(0, 1) -.5 +47.60651025683697;
       if (!vendorData.longitude) vendorData.longitude = Util.getRandomArbitary(0, 1) -.5 -122.33057498931885;
       //XXX
-
+      */
 
 
       // either make new vendorLocation or add new vendor to existing vendorLocation
