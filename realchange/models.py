@@ -53,7 +53,7 @@ class Vendor(ndb.Model):
 
     @classmethod
     def save_all(cls, new_vendors):
-        ndb.put_multi(new_vendors)
+        return ndb.put_multi(new_vendors)
 
     @property
     def display_name(self):
@@ -76,6 +76,10 @@ class Vendor(ndb.Model):
     @property
     def public_photo_url(self):
         return "XXX TODO"
+
+    @property
+    def address_for_geocoding(self):
+        return "{v.turf_address} in {v.turf_city}, WA".format(v=self)
 
     def to_display_jsonable(self):
         """
