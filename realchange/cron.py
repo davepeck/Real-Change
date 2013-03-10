@@ -29,7 +29,7 @@ class RealChangeCronHandler(RealChangeHandler):
 class SyncFileMakerCronHandler(RealChangeCronHandler):
     def get(self):
         self.ensure_cron()
-        taskqueue.add(url='/task/sync/fm/', queue_name='sync', target='service')
+        taskqueue.add(url='/task/sync/fm/', queue_name='sync', target=self.service_backend_name)
         self.respond_ok()
 
 
@@ -76,7 +76,7 @@ class SyncFileMakerTaskHandler(RealChangeHandler):
 
         # Queue up tasks to geocode our new thingies.
         for new_vendor_key in new_vendor_keys:
-            taskqueue.add(url='/task/vendor/geocode/', queue_name='geocode', target='service', params={'vendor_key': new_vendor_key.urlsafe()})
+            taskqueue.add(url='/task/vendor/geocode/', queue_name='geocode', target=self.service_backend_name, params={'vendor_key': new_vendor_key.urlsafe()})
 
         logging.info("SyncFileMakerTask :: DONE")
         self.respond_ok()

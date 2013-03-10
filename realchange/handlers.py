@@ -34,6 +34,10 @@ class RealChangeHandler(webapp2.RequestHandler):
     def is_development(self):
         return os.environ.get("SERVER_SOFTWARE", "").startswith("Development")
 
+    @property
+    def service_backend_name(self):
+        return None if self.is_development else "service"
+
     def respond(self, content, content_type="text/html", status=200):
         self.response.status_int = status
         self.response.headers['Content-Type'] = content_type
@@ -58,12 +62,12 @@ class HomeHandler(RealChangeHandler):
 
 
 class VendorHandler(RealChangeHandler):
+    def _hack_get_production_content(self):
+        from google.appengine.api import urlfetch
+        r = urlfetch.fetch("http://real-change.appspot.com/api/vendors/")
+        return self.respond(content=r.content, content_type="application/json", status=200)
+
     def get(self):
-        # XXX HACK HACK HACK
-        if self.is_development:
-            from google.appengine.api import urlfetch
-            r = urlfetch.fetch("http://real-change.appspot.com/api/vendors/")
-            return self.respond(content=r.content, content_type="application/json", status=200)
         return self.respond_with_jsonable(jsonable=Vendor.all_display_jsonable())
 
 
