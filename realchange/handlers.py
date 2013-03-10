@@ -54,14 +54,16 @@ class RealChangeHandler(webapp2.RequestHandler):
 
 class HomeHandler(RealChangeHandler):
     def get(self):
-        params = {
-            "is_development": "YES" if self.is_development else "NO",
-        }
-        return self.respond_with_template('home.dhtml', params)
+        return self.respond_with_template('home.dhtml', {})
 
 
 class VendorHandler(RealChangeHandler):
     def get(self):
+        # XXX HACK HACK HACK
+        if self.is_development:
+            from google.appengine.api import urlfetch
+            r = urlfetch.fetch("http://real-change.appspot.com/api/vendors/")
+            return self.respond(content=r.content, content_type="application/json", status=200)
         return self.respond_with_jsonable(jsonable=Vendor.all_display_jsonable())
 
 
