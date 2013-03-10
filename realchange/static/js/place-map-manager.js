@@ -7,6 +7,14 @@ window.Util = {
   }
 }
 
+if(typeof(String.prototype.trim) === "undefined")
+{
+    String.prototype.trim = function()
+    {
+        return String(this).replace(/^\s+|\s+$/g, '');
+    };
+}
+
 Vendor = function(data){
   this.public_profile_url = data.public_profile_url;
   this.display_name = data.display_name;
@@ -20,6 +28,19 @@ Vendor = function(data){
   this.public_photo_url = data.public_photo_url;
   this.is_public = data.is_public;
 }
+
+Vendor.prototype.displayName = function(){
+  return this.display_name ? this.display_name : 'A Real Change vendor';
+}
+Vendor.prototype.timeSlot = function(){
+  if (this.assignment_status == 'morning')
+    return 'morning';
+  else if (this.assignment_status == 'afternoon')
+    return 'evening';
+  else
+    return '';
+}
+
 
 VendorLocation = function(m, vendorData){
   this.mapManager = m;
@@ -40,9 +61,35 @@ VendorLocation.prototype.addVendor = function(vendorData){
 }
 
 VendorLocation.prototype.getIWContent = function(){
-  return '<div>' +
-    'STUFF HERE' +
+  var v1 = this.vendors[0];
+  var i = v1.display_location.indexOf(":");
+
+  title = v1.display_location;
+  location = null;
+  if (i!=-1){ //if colon found, make a title and location
+    var title = v1.display_location.substring(0,i);
+    var location = v1.display_location.substring(i+1).trim();
+  }
+
+  var directionsURL = "https://maps.google.com/maps?daddr=" + v1.latLng.toString();
+
+  var html = '<div id="infowin">' +
+    '<h1>'+title+'</h1>';
+  if (location) html += '<p class="location">'+location+'</p>';
+
+  _(this.vendors).each(function(v){
+    html += '<p>';
+    if (v.timeSlot())
+      html += '<strong>'+v.timeSlot()+':</strong> ';
+    html += v.displayName()+' sells '+v.club_status+' papers here every month.';
+    if (v.public_profile_url)
+      '<br /><a href="'+v.public_profile_url+'">Read vendor profile</a>.';
+    html += '</p>';
+  })
+
+  html += '<p><a href="' + directionsURL + '">Directions</a></p>' +
     '</div>';
+  return html;
 }
 
 VendorLocation.prototype.onClick = function(){
@@ -64,7 +111,7 @@ var PlaceMapManager = function(app, map){
   this.app = app;
   this.map = map;
   this.places = [];
-  this.infoWindow = new google.maps.InfoWindow();
+  this.infoWindow = new google.maps.InfoWindow({maxWidth: 300});
   google.maps.event.addListener(this.map, 'click', _(function(){this.infoWindow.close()}).bind(this) );
 }
 
@@ -108,6 +155,7 @@ PlaceMapManager.prototype.showPlacesInternal = function(data, p){
         existingLocation.addVendor(vendorData);
       }
       else {
+        if (console) console.log("found multiple vendors at location " + vendorData.display_location);
         var vendorLocation = new VendorLocation(this, vendorData);
         this.places.push( vendorLocation );
         vendorLocation.setMap(this.map);
