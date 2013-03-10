@@ -1,3 +1,5 @@
+window.HIGHLIGHT_PUBLIC_MARKERS = true;
+
 window.Util = {
   makeLocKey: function(lat, lng){
     return lat + "::" + lng;
@@ -5,6 +7,14 @@ window.Util = {
   getRandomArbitary: function(min, max) {
     return Math.random() * (max - min) + min;
   }
+}
+
+if(typeof(String.prototype.trim) === "undefined")
+{
+    String.prototype.trim = function()
+    {
+        return String(this).replace(/^\s+|\s+$/g, '');
+    };
 }
 
 Vendor = function(data){
@@ -21,28 +31,76 @@ Vendor = function(data){
   this.is_public = data.is_public;
 }
 
+Vendor.prototype.displayName = function(){
+  return this.display_name ? this.display_name : 'A Real Change vendor';
+}
+Vendor.prototype.timeSlot = function(){
+  if (this.assignment_status == 'morning')
+    return 'morning';
+  else if (this.assignment_status == 'afternoon')
+    return 'evening';
+  else
+    return '';
+}
+
+
 VendorLocation = function(m, vendorData){
   this.mapManager = m;
 
   var firstVendor = new Vendor(vendorData);
-  console.log(firstVendor);
   this.vendors = [firstVendor];
   this.locKey = Util.makeLocKey(firstVendor.lat, firstVendor.lng);
   this.latLng = this.vendors[0].latLng;
+  this.makeMarker();
+}
 
-  this.image = '/static/images/GBlue.png';
+VendorLocation.prototype.makeMarker = function(){
+  var tempMap = this.map
+  if (this.map) this.setMap(null);
+
+  var hasPublicVendor = _(this.vendors).find(function(v){ return v.is_public });
+  this.image = HIGHLIGHT_PUBLIC_MARKERS && hasPublicVendor ? '/static/images/GBlue.png' : '/static/images/GLightBlue.png';
   var markerOptions = {position: this.latLng, optimized: false, icon: this.image};
   this.marker = new google.maps.Marker(markerOptions);
+
+  if (tempMap) this.setMap(tempMap);
 }
 
 VendorLocation.prototype.addVendor = function(vendorData){
   this.vendors.push(new Vendor(vendorData));
+  this.makeMarker();
 }
 
 VendorLocation.prototype.getIWContent = function(){
-  return '<div>' +
-    'STUFF HERE' +
+  var v1 = this.vendors[0];
+  var i = v1.display_location.indexOf(":");
+
+  title = v1.display_location;
+  location = null;
+  if (i!=-1){ //if colon found, make a title and location
+    var title = v1.display_location.substring(0,i);
+    var location = v1.display_location.substring(i+1).trim();
+  }
+
+  var directionsURL = "https://maps.google.com/maps?daddr=" + v1.latLng.toString();
+
+  var html = '<div id="infowin">' +
+    '<h1>'+title+'</h1>';
+  if (location) html += '<p class="location">'+location+'</p>';
+
+  _(this.vendors).each(function(v){
+    html += '<p>';
+    if (v.timeSlot())
+      html += '<strong>'+v.timeSlot()+':</strong> ';
+    html += v.displayName()+' sells '+v.club_status+' papers here every month.';
+    if (v.public_profile_url)
+      html += '<br /><a target="_blank" href="'+v.public_profile_url+'">Read vendor profile</a>.';
+    html += '</p>';
+  })
+
+  html += '<p><a href="' + directionsURL + '">Directions</a></p>' +
     '</div>';
+  return html;
 }
 
 VendorLocation.prototype.onClick = function(){
@@ -64,7 +122,7 @@ var PlaceMapManager = function(app, map){
   this.app = app;
   this.map = map;
   this.places = [];
-  this.infoWindow = new google.maps.InfoWindow();
+  this.infoWindow = new google.maps.InfoWindow({maxWidth: 300});
   google.maps.event.addListener(this.map, 'click', _(function(){this.infoWindow.close()}).bind(this) );
 }
 
@@ -105,6 +163,7 @@ PlaceMapManager.prototype.showPlacesInternal = function(data, p){
       //(multiple vandors can be at one location -- should share one location marker)
       var existingLocation = _(this.places).find(function(place){ return place.locKey == Util.makeLocKey(vendorData.latitude, vendorData.longitude); });
       if (existingLocation) {
+        if (console) console.log("found multiple vendors at location " + vendorData.display_location);
         existingLocation.addVendor(vendorData);
       }
       else {

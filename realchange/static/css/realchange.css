@@ -4,12 +4,20 @@
 
 h1 {
     font-size:18px;
-    color: #555555;    
+    color: #555555;
+    margin: 0;
 }
 
 #vendormap p {
     font-size:12px;
     color: #444;
+}
+
+#vendormap p.location {
+  margin-top: 0;
+}
+#vendormap p:last-child {
+  margin-bottom:0;
 }
 
 #vendormap a {
