@@ -1,5 +1,15 @@
+#content {
+    margin-left:25px;
+}
+
+h1 {
+    font-size:18px;
+    color: #555555;    
+}
+
 #vendormap {
-  width: 500px;
-  height: 500px;
-  background-color: #eee;
+  width: 600px;
+  height: 450px;
+  background-color: #aaa;
+  border: 1px solid #aaa;
 }
