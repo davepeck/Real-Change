@@ -9,7 +9,7 @@ URLS = [
 
 
     # CRON URLs
-    Route(r'/cron/sync/fm/', cron.SyncFilemakerHandler, name='sync-filemaker'),
+    Route(r'/cron/sync/fm/', cron.SyncFileMakerHandler, name='sync-filemaker'),
 ]
 
 

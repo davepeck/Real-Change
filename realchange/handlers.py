@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os
 import sys
 import json
@@ -32,6 +33,9 @@ class RealChangeHandler(webapp2.RequestHandler):
         self.response.status_int = status
         self.response.headers['Content-Type'] = content_type
         self.response.write(content)
+
+    def respond_ok(self):
+        self.respond(content="OK", content_type="text/plain", status=200)
 
     def respond_with_jsonable(self, jsonable, content_type="application/json", status=200):
         content = json.dumps(jsonable)

@@ -1,6 +1,9 @@
 from __future__ import print_function
 import os
+import logging
 from .handlers import RealChangeHandler
+from .rcfmdb import RealChangeFileMakerDatabase
+from .models import Vendor
 
 
 class CronError(Exception):
@@ -22,11 +25,47 @@ class RealChangeCronHandler(RealChangeHandler):
 
 
 
-class SyncFilemakerHandler(RealChangeCronHandler):
+class SyncFileMakerHandler(RealChangeCronHandler):
     def get(self):
         self.ensure_cron()
-        self.respond("OK", status=200)
+        logging.info("SyncFileMaker :: START")
 
+        # Download data
+        logging.info("SyncFileMaker :: Download Data")
+        db = RealChangeFileMakerDatabase()
+        db.download_latest_data()  # THIS IS SLOW
+
+        # Build the new vendors
+        logging.info("SyncFileMaker :: Build Vendor Entities")
+        new_vendors = []
+        for row in db.rows():
+            if row.has_club_status and row.has_current_turf:
+                vendor = Vendor(
+                    vendor_id=row.vendor_id,
+                    private_name=row.private_name,
+                    public_name=row.public_name,
+                    is_public=row.is_public,
+                    profile_url=row.profile_url,
+                    club_status=row.club_status,
+                    assignment_status=row.current_assignment.assignment_status,
+                    turf_address=row.current_turf.turf_address,
+                    turf_location=row.current_turf.turf_location,
+                    turf_city=row.current_turf.turf_city,
+                    # XXX TODO geo_point = row.current_turf.geo_point
+                    photo_url=row.photo_url,
+                )
+                new_vendors.append(vendor)
+
+        # Blow away the current database
+        logging.info("SyncFileMaker :: Delete Old Entities")
+        Vendor.delete_all()
+
+        # Save the new database
+        logging.info("SyncFileMaker :: Save New Entities")
+        Vendor.save_all(new_vendors)
+
+        logging.info("SyncFileMaker :: DONE")
+        self.respond_ok()
 
 
 
