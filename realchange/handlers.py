@@ -54,7 +54,10 @@ class RealChangeHandler(webapp2.RequestHandler):
 
 class HomeHandler(RealChangeHandler):
     def get(self):
-        return self.respond_with_template('home.dhtml', {})
+        params = {
+            "is_development": "YES" if self.is_development else "NO",
+        }
+        return self.respond_with_template('home.dhtml', params)
 
 
 class VendorHandler(RealChangeHandler):
