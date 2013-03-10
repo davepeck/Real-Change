@@ -1,3 +1,5 @@
+window.HIGHLIGHT_PUBLIC_MARKERS = true;
+
 window.Util = {
   makeLocKey: function(lat, lng){
     return lat + "::" + lng;
@@ -46,19 +48,27 @@ VendorLocation = function(m, vendorData){
   this.mapManager = m;
 
   var firstVendor = new Vendor(vendorData);
-  console.log(firstVendor);
   this.vendors = [firstVendor];
   this.locKey = Util.makeLocKey(firstVendor.lat, firstVendor.lng);
   this.latLng = this.vendors[0].latLng;
+  this.makeMarker();
+}
 
-  this.image = firstVendor.is_public ? '/static/images/GBlue.png' : '/static/images/GLightBlue.png';
+VendorLocation.prototype.makeMarker = function(){
+  var tempMap = this.map
+  if (this.map) this.setMap(null);
 
+  var hasPublicVendor = _(this.vendors).find(function(v){ return v.is_public });
+  this.image = HIGHLIGHT_PUBLIC_MARKERS && hasPublicVendor ? '/static/images/GBlue.png' : '/static/images/GLightBlue.png';
   var markerOptions = {position: this.latLng, optimized: false, icon: this.image};
   this.marker = new google.maps.Marker(markerOptions);
+
+  if (tempMap) this.setMap(tempMap);
 }
 
 VendorLocation.prototype.addVendor = function(vendorData){
   this.vendors.push(new Vendor(vendorData));
+  this.makeMarker();
 }
 
 VendorLocation.prototype.getIWContent = function(){
@@ -153,10 +163,10 @@ PlaceMapManager.prototype.showPlacesInternal = function(data, p){
       //(multiple vandors can be at one location -- should share one location marker)
       var existingLocation = _(this.places).find(function(place){ return place.locKey == Util.makeLocKey(vendorData.latitude, vendorData.longitude); });
       if (existingLocation) {
+        if (console) console.log("found multiple vendors at location " + vendorData.display_location);
         existingLocation.addVendor(vendorData);
       }
       else {
-        if (console) console.log("found multiple vendors at location " + vendorData.display_location);
         var vendorLocation = new VendorLocation(this, vendorData);
         this.places.push( vendorLocation );
         vendorLocation.setMap(this.map);

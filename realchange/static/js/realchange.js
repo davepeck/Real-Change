@@ -9,9 +9,6 @@ function VendorMapApp(){
   this.mapManager = new PlaceMapManager(this, map);
 
   this.fetchVendors();
-
-  //MATT DO STUFF HERE :)
-
 }
 
 VendorMapApp.prototype.fetchVendors = function(){
@@ -20,11 +17,9 @@ VendorMapApp.prototype.fetchVendors = function(){
     url: url,
     dataType: 'json',
     success: _(function(data){
-        console.log("fetch done");
         this.mapManager.showPlacesFromFullResponse(data, {clearMap:true, fitMapToMarkers:true});
       }).bind(this),
     error: _(function(){
-        console.log("fetch error");
       }).bind(this)
   });
 }
