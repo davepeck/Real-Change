@@ -48,6 +48,10 @@ class Vendor(ndb.Model):
         ndb.delete_multi(cls.all(keys_only=True))
 
     @classmethod
+    def all_display_jsonable(cls):
+        return [v.to_display_jsonable() for v in cls.all()]
+
+    @classmethod
     def save_all(cls, new_vendors):
         ndb.put_multi(new_vendors)
 
@@ -84,10 +88,11 @@ class Vendor(ndb.Model):
             public_profile_url=self.public_profile_url,
             club_status=self.club_status,
             assignment_status=self.assignment_status,
-            latitude=self.geo_point[0],
-            longitude=self.geo_point[1],
+            latitude=self.geo_point[0] if self.geo_point else None,
+            longitude=self.geo_point[1] if self.geo_point else None,
             display_location=self.display_location,
             public_photo_url=self.public_photo_url,
+            is_public=self.is_public,
         )
 
 

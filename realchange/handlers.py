@@ -4,6 +4,7 @@ import sys
 import json
 import webapp2
 import jinja2
+from .models import Vendor
 
 
 # Set up jinja templating
@@ -54,7 +55,7 @@ class HomeHandler(RealChangeHandler):
 
 class VendorHandler(RealChangeHandler):
     def get(self):
-        return self.respond_with_jsonable(jsonable=('pickle', 'onion'))
+        return self.respond_with_jsonable(jsonable=Vendor.all_display_jsonable())
 
 
 
