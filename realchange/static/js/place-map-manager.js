@@ -51,7 +51,8 @@ VendorLocation = function(m, vendorData){
   this.locKey = Util.makeLocKey(firstVendor.lat, firstVendor.lng);
   this.latLng = this.vendors[0].latLng;
 
-  this.image = '/static/images/GBlue.png';
+  this.image = firstVendor.is_public ? '/static/images/GBlue.png' : '/static/images/GLightBlue.png';
+
   var markerOptions = {position: this.latLng, optimized: false, icon: this.image};
   this.marker = new google.maps.Marker(markerOptions);
 }
@@ -83,7 +84,7 @@ VendorLocation.prototype.getIWContent = function(){
       html += '<strong>'+v.timeSlot()+':</strong> ';
     html += v.displayName()+' sells '+v.club_status+' papers here every month.';
     if (v.public_profile_url)
-      '<br /><a href="'+v.public_profile_url+'">Read vendor profile</a>.';
+      html += '<br /><a target="_blank" href="'+v.public_profile_url+'">Read vendor profile</a>.';
     html += '</p>';
   })
 
