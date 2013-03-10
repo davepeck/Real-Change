@@ -1,7 +1,7 @@
-# PyFileMaker - Integrating FileMaker and Python 
-# (c) 2006-2008 Klokan Petr Pridal, klokan@klokan.cz 
+# PyFileMaker - Integrating FileMaker and Python
+# (c) 2006-2008 Klokan Petr Pridal, klokan@klokan.cz
 # (c) 2002-2006 Pieter Claerhout, pieter@yellowduck.be
-# 
+#
 # http://code.google.com/p/pyfilemaker/
 # http://www.yellowduck.be/filemaker/
 
@@ -16,7 +16,7 @@ try:
 	from google.appengine.api import urlfetch
 except:
 	urlfetch = False
-import httplib	
+import httplib
 from exceptions import StandardError
 
 # Import the FM modules
@@ -54,7 +54,7 @@ class FMServer:
 		if not self._address: self._address = '/fmi/xml/fmresultset.xml'
 		if not self._login: self._login = 'pyfilemaker'
 		if not self._password: self._password = ''
-		
+
 		self._maxRecords = 0
 		self._skipRecords = 0
 		#self.format = '-fmp_xml'
@@ -74,19 +74,19 @@ class FMServer:
 
 		"""Select the database to use. You don't need to specify the file
 		extension. PyFileMaker will do this automatically."""
-		
+
 		self._db = db
 
 
 	def setLayout( self, layout ):
-		
+
 		"""Select the right layout from the database."""
 
 		self._layout = layout
 
 
 	def _setMaxRecords( self, maxRec ):
-		
+
 		"""Specifies the maximum number of records you want returned (number or constant 'all')"""
 
 		if type(maxRec) == int:
@@ -97,7 +97,7 @@ class FMServer:
 			raise FMError, 'Unsupported -max value (not a number or "all").'
 
 	def _setSkipRecords( self, skipRec ):
-		
+
 		"""Specifies how many records to skip in the found set"""
 
 		if type(skipRec) == int or (type(skipRec) == str and skipRec.isdigit()):
@@ -106,7 +106,7 @@ class FMServer:
 			raise FMError, 'Unsupported -skip value (not a number).'
 
 	def _setLogicalOperator( self, lop ):
-		
+
 		"""Sets the way the find fields should be combined together."""
 
 		if not lop.lower() in ['and', 'or']:
@@ -184,7 +184,7 @@ class FMServer:
 		"""Adds a sort parameter, order have to be in ['ascend', 'ascending','descend', 'descending','custom']"""
 
 		if order != '':
-			
+
 			validSortOrders = {
 				'ascend':'ascend',
 				'ascending':'ascend',
@@ -196,8 +196,8 @@ class FMServer:
 
 			if not string.lower( order ) in validSortOrders.keys():
 				raise FMError, 'Invalid sort order for "' + field + '"'
-		
-		self._sortParams.append( 
+
+		self._sortParams.append(
 			[ field, validSortOrders[ string.lower( order ) ]]
 		)
 
@@ -221,7 +221,7 @@ class FMServer:
 		"""This function returns the list of open databases"""
 
 		uu = urllib.urlencode
-	
+
 		request = []
 		request.append( uu( {'-dbnames': '' } ) )
 
@@ -231,19 +231,19 @@ class FMServer:
 		dbNames = []
 		for dbName in result.resultset:
 			dbNames.append( string.lower( dbName['DATABASE_NAME'] ) )
-		
+
 		return dbNames
 
 
 	def getLayoutNames( self ):
-		
+
 		"""This function returns the list of layouts for the current db."""
 
 		if self._db == '':
 			raise FMError, 'No database was selected'
 
 		uu = urllib.urlencode
-	
+
 		request = []
 		request.append( uu( {'-db': self._db } ) )
 		request.append( uu( {'-layoutnames': '' } ) )
@@ -259,14 +259,14 @@ class FMServer:
 
 
 	def getScriptNames( self ):
-		
+
 		"""This function returns the list of layouts for the current db."""
 
 		if self._db == '':
 			raise FMError, 'No database was selected'
 
 		uu = urllib.urlencode
-	
+
 		request = []
 		request.append( uu( {'-db': self._db } ) )
 		request.append( uu( {'-scriptnames': '' } ) )
@@ -364,7 +364,7 @@ class FMServer:
 			for key, value in WHAT._modified():
 				if WHAT.__new2old__.has_key(key):
 					self._addDBParam( WHAT.__new2old__[key].encode('utf-8'), value )
-				else:	
+				else:
 					self._addDBParam( key, value )
 			self._addDBParam( 'RECORDID', WHAT.RECORDID )
 			self._addDBParam( 'MODID', WHAT.MODID )
@@ -398,7 +398,7 @@ class FMServer:
 				if key not in ['RECORDID','MODID']:
 					if WHAT.__new2old__.has_key(key):
 						self._addDBParam( WHAT.__new2old__[key].encode('utf-8'), WHAT[key] )
-					else:	
+					else:
 						self._addDBParam( key, WHAT[key] )
 		elif type(WHAT)==dict:
 			for key in WHAT:
@@ -436,7 +436,7 @@ class FMServer:
 			for key, value in WHAT._modified():
 				if WHAT.__new2old__.has_key(key):
 					self._addDBParam( WHAT.__new2old__[key].encode('utf-8'), value )
-				else:	
+				else:
 					self._addDBParam( key, value )
 			self._addDBParam( 'RECORDID', WHAT.RECORDID )
 			self._addDBParam( 'MODID', WHAT.MODID )
@@ -470,7 +470,7 @@ class FMServer:
 		try:
 
 			uu = urllib.urlencode
-		
+
 			request = []
 			request.append( uu( {'-db': self._db } ) )
 
@@ -506,10 +506,10 @@ class FMServer:
 
 				if dbParam[0] == 'RECORDID':
 					request.append( uu( { '-recid': dbParam[1] } ) )
-				
+
 				elif dbParam[0] == 'MODID':
 					request.append( uu( { '-modid': dbParam[1] } ) )
-	   
+
 				elif hasattr(dbParam[1], 'strftime'):
 					d = dbParam[1]
 					if (not hasattr(d, 'second')) or ((hasattr(d,'second') and (d.second + d.minute * 60 + d.hour * 3600) == 0)):
@@ -519,7 +519,7 @@ class FMServer:
 					del(d)
 				else:
 					request.append( uu( { dbParam[0]: dbParam[1] } ) )
-					
+
 
 			request.append ( action )
 
@@ -528,7 +528,7 @@ class FMServer:
 			#if action == '-view':
 			#	 result = FMProLayout.FMProLayout( result )
 			#else:
-			
+
 			try:
 				result = FMResultset.FMResultset( result )
 			except FMFieldError, value:
@@ -569,7 +569,7 @@ class FMServer:
 		#	 if requestitem.startswith( '-format' ):
 		#		 hasFormat = 1
 		#		 break
-		
+
 		#if not hasFormat:
 		#	 request.insert(0, uu( {'-format': self.format } ) )
 
@@ -578,7 +578,7 @@ class FMServer:
 			self._url = "%s://%s:%s@%s:%s%s?%s" % (self._protocol, self._login, self._password, self._host, self._port, self._address, request)
 		else:
 			self._url = "%s://%s:%s%s?%s" % (self._protocol, self._host, self._port, self._address, request)
-		
+
 		if self._debug:
 			if hasattr(self._debug, 'debug'):
 				debug.debug( self._url )
@@ -598,14 +598,14 @@ class FMServer:
 		if urlfetch:
 			try:
 				# We have to ignore port number, Google supports only 80, and 443 - defined by protocol
-				result = urlfetch.fetch("%s://%s%s?%s" % ( self._protocol, self._host, self._address, request), headers = headers)
+				result = urlfetch.fetch("%s://%s%s?%s" % ( self._protocol, self._host, self._address, request), deadline=599, headers = headers)
 				# TODO: result.content_was_truncated handling
-			except e, reason:
-				raise e, ("Connection to your server from Google servers failed", reason)
+			except Exception, reason:
+				raise Exception("Connection to your server from Google servers failed", reason)
 			if result.status_code != httplib.OK:
 				raise httplib.HTTPException, (result.status_code, "Connection to your server from Google servers failed")
 			data = result.content
-				
+
 		else:
 			conn = httplib.HTTPConnection( self._host, self._port )
 			conn.request( 'GET', self._address, request, headers )

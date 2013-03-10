@@ -1,3 +1,4 @@
 backends:
-- name: sync
+- name: service
   options: dynamic
+

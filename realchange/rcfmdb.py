@@ -26,9 +26,9 @@ class RealChangeAssignment(object):
     def assignment_status(self):
         status = AssignmentStatus.NONE
         if self.assignment_type:
-            if self.assignment_type.startswith('6am'):
+            if self.time_slot.startswith('6am'):
                 status = AssignmentStatus.MORNING
-            elif self.assignment_type.startswith('2pm'):
+            elif self.time_slot.startswith('2pm'):
                 status = AssignmentStatus.AFTERNOON
             else:
                 status = AssignmentStatus.ANY_TIME

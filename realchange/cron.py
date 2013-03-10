@@ -1,10 +1,10 @@
 from __future__ import print_function
 import os
 import logging
+from google.appengine.api import taskqueue
 from .handlers import RealChangeHandler
 from .rcfmdb import RealChangeFileMakerDatabase
 from .models import Vendor
-
 
 class CronError(Exception):
     pass
@@ -25,18 +25,23 @@ class RealChangeCronHandler(RealChangeHandler):
 
 
 
-class SyncFileMakerHandler(RealChangeCronHandler):
+class SyncFileMakerCronHandler(RealChangeCronHandler):
     def get(self):
         self.ensure_cron()
-        logging.info("SyncFileMaker :: START")
+        taskqueue.add(url='/task/sync/fm/', queue_name='sync', target='service')
+
+
+class SyncFileMakerTaskHandler(RealChangeHandler):
+    def post(self):
+        logging.info("SyncFileMakerTask :: START")
 
         # Download data
-        logging.info("SyncFileMaker :: Download Data")
+        logging.info("SyncFileMakerTask :: Download Data")
         db = RealChangeFileMakerDatabase()
         db.download_latest_data()  # THIS IS SLOW
 
         # Build the new vendors
-        logging.info("SyncFileMaker :: Build Vendor Entities")
+        logging.info("SyncFileMakerTask :: Build Vendor Entities")
         new_vendors = []
         for row in db.rows():
             if row.has_club_status and row.has_current_turf:
@@ -57,14 +62,14 @@ class SyncFileMakerHandler(RealChangeCronHandler):
                 new_vendors.append(vendor)
 
         # Blow away the current database
-        logging.info("SyncFileMaker :: Delete Old Entities")
+        logging.info("SyncFileMakerTask :: Delete Old Entities")
         Vendor.delete_all()
 
         # Save the new database
-        logging.info("SyncFileMaker :: Save New Entities")
+        logging.info("SyncFileMakerTask :: Save New Entities")
         Vendor.save_all(new_vendors)
 
-        logging.info("SyncFileMaker :: DONE")
+        logging.info("SyncFileMakerTask :: DONE")
         self.respond_ok()
 
 
