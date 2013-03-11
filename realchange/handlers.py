@@ -69,6 +69,10 @@ class VendorHandler(RealChangeHandler):
 
     def get(self):
         return self.respond_with_jsonable(jsonable=Vendor.all_display_jsonable())
+        
+class EmbedHandler(RealChangeHandler):
+    def get(self):
+        return self.respond_with_template('embed.dhtml', {})
 
 
 

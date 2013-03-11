@@ -1,7 +1,11 @@
 h1 {
     font-size:18px;
     color: #555555;
-    margin: 0;
+}
+
+#content {
+    margin-left:25px;
+    
 }
 
 #vendormap p {
