@@ -6,6 +6,7 @@ import handlers
 URLS = [
     # Basic URLs
     Route(r'/', handlers.HomeHandler, name='home'),
+    Route(r'/embed/', handlers.EmbedHandler, name='embed'),
 
     # CRON and TASK URLs
     Route(r'/cron/sync/fm/', cron.SyncFileMakerCronHandler, name='cron-sync-filemaker'),
