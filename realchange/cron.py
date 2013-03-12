@@ -1,12 +1,11 @@
 from __future__ import print_function
 import logging
-from geopy import geocoders
+from pygeocoder import Geocoder
 from google.appengine.api import taskqueue
 from google.appengine.ext import ndb
 from .handlers import RealChangeHandler
 from .rcfmdb import RealChangeFileMakerDatabase
 from .models import Vendor
-from .secrets import GOOGLE_GEOCODE_KEY
 
 
 class CronError(Exception):
@@ -91,10 +90,8 @@ class GeocodeTaskHandler(RealChangeHandler):
 
         vendor = vendor_key.get()
         logging.info("GeocodeTaskHandler :: vendor = {0}".format(repr(vendor)))
-        coder = geocoders.Google(api_key=GOOGLE_GEOCODE_KEY)
-
-        geocodes = coder.geocode(vendor.address_for_geocoding, exactly_one=False)
-        place, (lat, lng) = geocodes[0]
+        results = Geocoder.geocode(vendor.address_for_geocoding)
+        (lat, lng) = results[0].coordinates
         vendor.new_geo_point = ndb.GeoPt(lat, lng)
         vendor.put()
 

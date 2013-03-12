@@ -1,8 +1,7 @@
 from nose.tools import *
-from geopy import geocoders
+from pygeocoder import Geocoder
 
 def test_index():
-    g = geocoders.Google()
-    assert g
-    place, (lat, lng) = g.geocode("10900 Euclid Ave in Cleveland")
-    print "%s: %.5f, %.5f" % (place, lat, lng)
+    (lat, lng) = Geocoder.geocode("10900 Euclid Ave in Cleveland")[0].coordinates
+    print "%.5f, %.5f" % (lat, lng)
+
