@@ -2,6 +2,7 @@ from __future__ import print_function
 import logging
 from pygeocoder import Geocoder
 from google.appengine.api import taskqueue
+from google.appengine.api import memcache
 from google.appengine.ext import ndb
 from .handlers import RealChangeHandler
 from .rcfmdb import RealChangeFileMakerDatabase
@@ -24,11 +25,29 @@ class RealChangeCronHandler(RealChangeHandler):
         if (not is_development) and (not has_cron_header):
             raise CronError("Illegal call to app engine cron.")
 
+    def is_safe_to_sync(self):
+        safe_to_sync = memcache.add(key="_safe_to_sync", value="ignore", time=300)
+        return safe_to_sync
+
+    def kick_off_sync(self):
+        taskqueue.add(url='/task/sync/fm/', queue_name='sync', target=self.service_backend_name)
+
+
+class SyncHandler(RealChangeCronHandler):
+    """This is the manually-triggered entrance to the sync tasks."""
+    def get(self):
+        safe = self.is_safe_to_sync()
+        if safe:
+            self.kick_off_sync()
+        return self.respond_with_template('sync.dhtml', {"safe": safe})
+
 
 class SyncFileMakerCronHandler(RealChangeCronHandler):
+    """This is the cron-triggered entrance to the sync tasks."""
     def get(self):
         self.ensure_cron()
-        taskqueue.add(url='/task/sync/fm/', queue_name='sync', target=self.service_backend_name)
+        if self.is_safe_to_sync():
+            self.kick_off_sync()
         self.respond_ok()
 
 

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Real Change Vendor Map</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <link rel="stylesheet" href="/static/css/normalize.css">
+        <link rel="stylesheet" href="/static/css/realchange.css">
+    </head>
+    <body>
+        <div id="content">
+            <h1>{% if safe %}Database Sync Started{% else %}Sync Already In Progress{% endif %}</h1>
+            <p>{% if safe %}Because you visited this page, a new database sync has been started. You can start new syncs every five minutes or so.{% else %}A database sync is already in progress, so nothing happened. You can start new syncs every five minutes or so.{% endif %}</p>
+    </body>
+</html>

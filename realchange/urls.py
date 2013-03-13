@@ -9,6 +9,7 @@ URLS = [
     Route(r'/embed/', handlers.EmbedHandler, name='embed'),
 
     # CRON and TASK URLs
+    Route(r'/private/sync/', cron.SyncHandler, name='sync'),
     Route(r'/cron/sync/fm/', cron.SyncFileMakerCronHandler, name='cron-sync-filemaker'),
     Route(r'/task/sync/fm/', cron.SyncFileMakerTaskHandler, name='task-sync-filemaker'),
     Route(r'/task/vendor/geocode/', cron.GeocodeTaskHandler, name='task-vendor-geocode'),

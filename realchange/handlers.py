@@ -5,6 +5,8 @@ import json
 import webapp2
 import jinja2
 from .models import Vendor
+from google.appengine.api import taskqueue
+from google.appengine.api import memcache
 
 
 # Set up jinja templating
@@ -69,10 +71,9 @@ class VendorHandler(RealChangeHandler):
 
     def get(self):
         return self.respond_with_jsonable(jsonable=Vendor.all_display_jsonable())
-        
+
+
 class EmbedHandler(RealChangeHandler):
     def get(self):
         return self.respond_with_template('embed.dhtml', {})
-
-
 
