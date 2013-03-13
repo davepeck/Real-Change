@@ -1,7 +1,7 @@
 function VendorMapApp(){
   var mapOptions = {
-    center: new google.maps.LatLng(47.60651025683697,-122.33057498931885),
-    zoom: 12,
+    center: new google.maps.LatLng(47.652, -122.263),
+    zoom: 11,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   var map = new google.maps.Map(document.getElementById("vendormap"), mapOptions);

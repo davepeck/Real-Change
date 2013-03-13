@@ -36,9 +36,9 @@ Vendor.prototype.displayName = function(){
 }
 Vendor.prototype.timeSlot = function(){
   if (this.assignment_status == 'morning')
-    return 'morning';
+    return 'Morning';
   else if (this.assignment_status == 'afternoon')
-    return 'evening';
+    return 'Evening';
   else
     return '';
 }
@@ -98,7 +98,7 @@ VendorLocation.prototype.getIWContent = function(){
     html += '</p>';
   })
 
-  html += '<p><a href="' + directionsURL + '">Directions</a></p>' +
+  html += '<p><a target ="_blank" href="' + directionsURL + '">Directions</a></p>' +
     '</div>';
   return html;
 }
@@ -173,7 +173,7 @@ PlaceMapManager.prototype.showPlacesInternal = function(data, p){
         if (p.fitMapToMarkers) bounds.extend(vendorLocation.latLng)
       }
     }).bind(this) );
-    if (p.fitMapToMarkers) this.map.fitBounds(bounds);
+  //  if (p.fitMapToMarkers) this.map.fitBounds(bounds);
   }
 }
 

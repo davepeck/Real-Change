@@ -14,7 +14,7 @@ h1 {
 }
 
 #vendormap p.location {
-  margin-top: 0;
+  margin-top: -10px;
 }
 #vendormap p:last-child {
   margin-bottom:0;
