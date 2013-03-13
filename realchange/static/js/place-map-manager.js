@@ -173,7 +173,7 @@ PlaceMapManager.prototype.showPlacesInternal = function(data, p){
         if (p.fitMapToMarkers) bounds.extend(vendorLocation.latLng)
       }
     }).bind(this) );
-  //  if (p.fitMapToMarkers) this.map.fitBounds(bounds);
+   if (p.fitMapToMarkers) this.map.fitBounds(bounds);
   }
 }
 

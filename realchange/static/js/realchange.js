@@ -17,7 +17,7 @@ VendorMapApp.prototype.fetchVendors = function(){
     url: url,
     dataType: 'json',
     success: _(function(data){
-        this.mapManager.showPlacesFromFullResponse(data, {clearMap:true, fitMapToMarkers:true});
+        this.mapManager.showPlacesFromFullResponse(data, {clearMap:true}); //pass in fitMapToMarkers: true
       }).bind(this),
     error: _(function(){
       }).bind(this)
