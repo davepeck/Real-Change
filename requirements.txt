@@ -1,4 +1,3 @@
 PyFileMaker==2.6
-geopy==0.94.2
-requests==1.1.0
+pygeocoder==1.1.4
 wsgiref==0.1.2
