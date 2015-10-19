@@ -154,7 +154,7 @@ class RealChangeDatabaseRow(object):
 
 
 class RealChangeFileMakerDatabase(object):
-    DATABASE_NAME = "rcn_vendors"
+    DATABASE_NAME = "RCN_Vendors"
     LAYOUT_NAME = "vendorturfinfo"
 
     def __init__(self):
@@ -187,9 +187,3 @@ class RealChangeFileMakerDatabase(object):
 
     def rows(self):
         return self._rows
-
-
-
-
-
-
